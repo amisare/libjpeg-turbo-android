@@ -104,8 +104,6 @@ LOCAL_C_SRC_FILES := $(addprefix $(SOURCE_PATH)/, $(LOCAL_C_SRC_FILES))
 LOCAL_SRC_FILES += $(LOCAL_C_SRC_FILES)
 
 
-$(warning Building to legacy library name $(LOCAL_SRC_FILES))
-
 LOCAL_C_INCLUDES += \
 	$(LOCAL_PATH)/include \
 	$(LOCAL_PATH)/$(SOURCE_PATH) \
