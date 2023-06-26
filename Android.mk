@@ -66,21 +66,43 @@ LOCAL_CFLAGS += \
 
 LOCAL_ASMFLAGS += -DPIC
 
-else ifneq ($(filter $(TARGET_ARCH_ABI), armeabi-v7a armeabi-v7a-hard armeabi),)
-LOCAL_SRC_FILES += \
-	$(SOURCE_SIMD_PATH)/arm/jsimd.c \
-	$(SOURCE_SIMD_PATH)/arm/jsimd_neon.S \
+else ifneq ($(filter $(TARGET_ARCH_ABI), armeabi-v7a armeabi-v7a-hard armeabi arm64-v8a),)
 
-LOCAL_CFLAGS += \
-	-DSIZEOF_SIZE_T=4 \
+LOCAL_SIMD_SRC_FILES := arm/jcgray-neon.c arm/jcphuff-neon.c arm/jcsample-neon.c \
+    arm/jdmerge-neon.c arm/jdsample-neon.c arm/jfdctfst-neon.c \
+    arm/jidctred-neon.c arm/jquanti-neon.c \
 
-else ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
-LOCAL_SRC_FILES += \
-	$(SOURCE_SIMD_PATH)/arm64/jsimd.c \
-	$(SOURCE_SIMD_PATH)/arm64/jsimd_neon.S \
+LOCAL_SIMD_SRC_FILES := $(addprefix $(SOURCE_SIMD_PATH)/, $(LOCAL_SIMD_SRC_FILES))
+LOCAL_SRC_FILES += $(LOCAL_SIMD_SRC_FILES)
 
-LOCAL_CFLAGS += \
-	-DSIZEOF_SIZE_T=8 \
+    ifneq ($(filter $(TARGET_ARCH_ABI), armeabi-v7a armeabi-v7a-hard armeabi),)
+
+    LOCAL_SIMD_SRC_FILES := arm/aarch32/jsimd.c \
+        arm/aarch32/jsimd_neon.S \
+        arm/aarch32/jchuff-neon.c \
+        arm/jdcolor-neon.c \
+        arm/jfdctint-neon.c \
+
+    LOCAL_SIMD_SRC_FILES := $(addprefix $(SOURCE_SIMD_PATH)/, $(LOCAL_SIMD_SRC_FILES))
+    LOCAL_SRC_FILES += $(LOCAL_SIMD_SRC_FILES)
+
+    LOCAL_CFLAGS += \
+        -DSIZEOF_SIZE_T=4 \
+        -mfpu=neon \
+
+    else ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
+
+    LOCAL_SIMD_SRC_FILES := arm/aarch64/jsimd.c \
+        arm/aarch64/jsimd_neon.S \
+        arm/jidctfst-neon.c \
+
+    LOCAL_SIMD_SRC_FILES := $(addprefix $(SOURCE_SIMD_PATH)/, $(LOCAL_SIMD_SRC_FILES))
+    LOCAL_SRC_FILES += $(LOCAL_SIMD_SRC_FILES)
+
+    LOCAL_CFLAGS += \
+        -DSIZEOF_SIZE_T=8 \
+
+    endif
 
 endif
 
