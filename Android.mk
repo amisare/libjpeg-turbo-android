@@ -142,15 +142,15 @@ LOCAL_CFLAGS += \
 	-DPPM_SUPPORTED=1 \
 
 # lib static
-LOCAL_MODULE := libjpeg-turbo-2.0_static
+LOCAL_MODULE := libjpeg-turbo-2.1_static
 include $(BUILD_STATIC_LIBRARY)
 
 # lib share
 include $(CLEAR_VARS)
 LOCAL_EXPORT_LDLIBS += -llog
 
-LOCAL_WHOLE_STATIC_LIBRARIES = libjpeg-turbo-2.0_static
+LOCAL_WHOLE_STATIC_LIBRARIES = libjpeg-turbo-2.1_static
 LOCAL_DISABLE_FATAL_LINKER_WARNINGS := true
 
-LOCAL_MODULE := libjpeg-turbo-2.0
+LOCAL_MODULE := libjpeg-turbo-2.1
 include $(BUILD_SHARED_LIBRARY)
