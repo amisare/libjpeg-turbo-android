@@ -7,11 +7,14 @@
 /* How to obtain function inlining. */
 #define INLINE  __inline__ __attribute__((always_inline))
 
+/* How to obtain thread-local storage */
+#define THREAD_LOCAL  __thread
+
 /* Define to the full name of this package. */
 #define PACKAGE_NAME  "libjpeg-turbo"
 
 /* Version number of package */
-#define VERSION  "2.0.4"
+#define VERSION  "2.0.5"
 
 /* The size of `size_t', as computed by sizeof. */
 // #define SIZEOF_SIZE_T  8
