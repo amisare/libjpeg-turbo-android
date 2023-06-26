@@ -14,7 +14,7 @@
 #define PACKAGE_NAME  "libjpeg-turbo"
 
 /* Version number of package */
-#define VERSION  "2.1.5.1"
+#define VERSION  "2.1.6"
 
 /* The size of `size_t', as computed by sizeof. */
 // #define SIZEOF_SIZE_T  8
