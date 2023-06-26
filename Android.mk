@@ -17,21 +17,17 @@ LOCAL_ASMFLAGS += -DELF
 
 # asm file
 ifeq ($(TARGET_ARCH_ABI),x86_64)
-LOCAL_SIMD_SRC_FILES := x86_64/jsimdcpu.asm x86_64/jfdctflt-sse.asm \
-    x86_64/jccolor-sse2.asm x86_64/jcgray-sse2.asm x86_64/jchuff-sse2.asm \
-    x86_64/jcphuff-sse2.asm x86_64/jcsample-sse2.asm x86_64/jdcolor-sse2.asm \
-    x86_64/jdmerge-sse2.asm x86_64/jdsample-sse2.asm x86_64/jfdctfst-sse2.asm \
-    x86_64/jfdctint-sse2.asm x86_64/jidctflt-sse2.asm x86_64/jidctfst-sse2.asm \
-    x86_64/jidctint-sse2.asm x86_64/jidctred-sse2.asm x86_64/jquantf-sse2.asm \
-    x86_64/jquanti-sse2.asm \
-    x86_64/jccolor-avx2.asm x86_64/jcgray-avx2.asm x86_64/jcsample-avx2.asm \
-    x86_64/jdcolor-avx2.asm x86_64/jdmerge-avx2.asm x86_64/jdsample-avx2.asm \
-    x86_64/jfdctint-avx2.asm x86_64/jidctint-avx2.asm x86_64/jquanti-avx2.asm \
+LOCAL_SIMD_SRC_FILES := jfdctflt-sse-64 jccolor-sse2-64 jcgray-sse2-64 \
+    jchuff-sse2-64 jcsample-sse2-64 jdcolor-sse2-64 jdmerge-sse2-64 \
+    jdsample-sse2-64 jfdctfst-sse2-64 jfdctint-sse2-64 jidctflt-sse2-64 \
+    jidctfst-sse2-64 jidctint-sse2-64 jidctred-sse2-64 jquantf-sse2-64 \
+    jquanti-sse2-64 \
 
 LOCAL_SIMD_SRC_FILES := $(addprefix $(SOURCE_SIMD_PATH)/, $(LOCAL_SIMD_SRC_FILES))
+LOCAL_SIMD_SRC_FILES := $(addsuffix .asm, $(LOCAL_SIMD_SRC_FILES))
 
 LOCAL_SRC_FILES += $(LOCAL_SIMD_SRC_FILES)
-LOCAL_SRC_FILES += $(SOURCE_SIMD_PATH)/x86_64/jsimd.c
+LOCAL_SRC_FILES += $(SOURCE_SIMD_PATH)/jsimd_x86_64.c
 
 LOCAL_CFLAGS += \
 	-DSIZEOF_SIZE_T=8 \
@@ -39,27 +35,19 @@ LOCAL_CFLAGS += \
 LOCAL_ASMFLAGS += -D__x86_64__
 
 else ifeq ($(TARGET_ARCH_ABI),x86)
-LOCAL_SIMD_SRC_FILES := i386/jsimdcpu.asm i386/jfdctflt-3dn.asm \
-    i386/jidctflt-3dn.asm i386/jquant-3dn.asm \
-    i386/jccolor-mmx.asm i386/jcgray-mmx.asm i386/jcsample-mmx.asm \
-    i386/jdcolor-mmx.asm i386/jdmerge-mmx.asm i386/jdsample-mmx.asm \
-    i386/jfdctfst-mmx.asm i386/jfdctint-mmx.asm i386/jidctfst-mmx.asm \
-    i386/jidctint-mmx.asm i386/jidctred-mmx.asm i386/jquant-mmx.asm \
-    i386/jfdctflt-sse.asm i386/jidctflt-sse.asm i386/jquant-sse.asm \
-    i386/jccolor-sse2.asm i386/jcgray-sse2.asm i386/jchuff-sse2.asm \
-    i386/jcphuff-sse2.asm i386/jcsample-sse2.asm i386/jdcolor-sse2.asm \
-    i386/jdmerge-sse2.asm i386/jdsample-sse2.asm i386/jfdctfst-sse2.asm \
-    i386/jfdctint-sse2.asm i386/jidctflt-sse2.asm i386/jidctfst-sse2.asm \
-    i386/jidctint-sse2.asm i386/jidctred-sse2.asm i386/jquantf-sse2.asm \
-    i386/jquanti-sse2.asm \
-    i386/jccolor-avx2.asm i386/jcgray-avx2.asm i386/jcsample-avx2.asm \
-    i386/jdcolor-avx2.asm i386/jdmerge-avx2.asm i386/jdsample-avx2.asm \
-    i386/jfdctint-avx2.asm i386/jidctint-avx2.asm i386/jquanti-avx2.asm \
+LOCAL_SIMD_SRC_FILES := jsimdcpu jfdctflt-3dn jidctflt-3dn jquant-3dn jccolor-mmx \
+    jcgray-mmx jcsample-mmx jdcolor-mmx jdmerge-mmx jdsample-mmx jfdctfst-mmx \
+    jfdctint-mmx jidctfst-mmx jidctint-mmx jidctred-mmx jquant-mmx jfdctflt-sse \
+    jidctflt-sse jquant-sse jccolor-sse2 jcgray-sse2 jchuff-sse2 jcsample-sse2 \
+    jdcolor-sse2 jdmerge-sse2 jdsample-sse2 jfdctfst-sse2 jfdctint-sse2 \
+    jidctflt-sse2 jidctfst-sse2 jidctint-sse2 jidctred-sse2 jquantf-sse2 \
+    jquanti-sse2 \
 
 LOCAL_SIMD_SRC_FILES := $(addprefix $(SOURCE_SIMD_PATH)/, $(LOCAL_SIMD_SRC_FILES))
+LOCAL_SIMD_SRC_FILES := $(addsuffix .asm, $(LOCAL_SIMD_SRC_FILES))
 
 LOCAL_SRC_FILES += $(LOCAL_SIMD_SRC_FILES)
-LOCAL_SRC_FILES += $(SOURCE_SIMD_PATH)/i386/jsimd.c
+LOCAL_SRC_FILES += $(SOURCE_SIMD_PATH)/jsimd_i386.c
 
 LOCAL_CFLAGS += \
 	-DSIZEOF_SIZE_T=4 \
@@ -68,16 +56,16 @@ LOCAL_ASMFLAGS += -DPIC
 
 else ifneq ($(filter $(TARGET_ARCH_ABI), armeabi-v7a armeabi-v7a-hard armeabi),)
 LOCAL_SRC_FILES += \
-	$(SOURCE_SIMD_PATH)/arm/jsimd.c \
-	$(SOURCE_SIMD_PATH)/arm/jsimd_neon.S \
+	$(SOURCE_SIMD_PATH)/jsimd_arm.c \
+	$(SOURCE_SIMD_PATH)/jsimd_arm_neon.S \
 
 LOCAL_CFLAGS += \
 	-DSIZEOF_SIZE_T=4 \
 
 else ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
 LOCAL_SRC_FILES += \
-	$(SOURCE_SIMD_PATH)/arm64/jsimd.c \
-	$(SOURCE_SIMD_PATH)/arm64/jsimd_neon.S \
+	$(SOURCE_SIMD_PATH)/jsimd_arm64.c \
+	$(SOURCE_SIMD_PATH)/jsimd_arm64_neon.S \
 
 LOCAL_CFLAGS += \
 	-DSIZEOF_SIZE_T=8 \
@@ -86,18 +74,17 @@ endif
 
 # c file
 LOCAL_C_SRC_FILES := jcapimin.c jcapistd.c jccoefct.c jccolor.c jcdctmgr.c jchuff.c \
-  jcicc.c jcinit.c jcmainct.c jcmarker.c jcmaster.c jcomapi.c jcparam.c \
-  jcphuff.c jcprepct.c jcsample.c jctrans.c jdapimin.c jdapistd.c jdatadst.c \
-  jdatasrc.c jdcoefct.c jdcolor.c jddctmgr.c jdhuff.c jdicc.c jdinput.c \
-  jdmainct.c jdmarker.c jdmaster.c jdmerge.c jdphuff.c jdpostct.c jdsample.c \
-  jdtrans.c jerror.c jfdctflt.c jfdctfst.c jfdctint.c jidctflt.c jidctfst.c \
-  jidctint.c jidctred.c jquant1.c jquant2.c jutils.c jmemmgr.c jmemnobs.c \
+  jcinit.c jcmainct.c jcmarker.c jcmaster.c jcomapi.c jcparam.c jcphuff.c \
+  jcprepct.c jcsample.c jctrans.c jdapimin.c jdapistd.c jdatadst.c jdatasrc.c \
+  jdcoefct.c jdcolor.c jddctmgr.c jdhuff.c jdinput.c jdmainct.c jdmarker.c \
+  jdmaster.c jdmerge.c jdphuff.c jdpostct.c jdsample.c jdtrans.c jerror.c \
+  jfdctflt.c jfdctfst.c jfdctint.c jidctflt.c jidctfst.c jidctint.c jidctred.c \
+  jquant1.c jquant2.c jutils.c jmemmgr.c jmemnobs.c \
 
 LOCAL_C_SRC_FILES += jaricom.c
 LOCAL_C_SRC_FILES += jcarith.c
 LOCAL_C_SRC_FILES += jdarith.c
-LOCAL_C_SRC_FILES += turbojpeg.c transupp.c jdatadst-tj.c jdatasrc-tj.c rdbmp.c rdppm.c \
-      wrbmp.c wrppm.c
+LOCAL_C_SRC_FILES += turbojpeg.c transupp.c jdatadst-tj.c jdatasrc-tj.c
 
 LOCAL_C_SRC_FILES := $(addprefix $(SOURCE_PATH)/, $(LOCAL_C_SRC_FILES))
 
