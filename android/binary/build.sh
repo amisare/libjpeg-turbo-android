@@ -116,3 +116,17 @@ copy_header_files "build/simd/arm" "$INCLUDE_DIR"
 copy_header_files "$LIBJPEG_TURBO_DIR" "$INCLUDE_DIR"
 
 rm -rf build
+
+UPDATE_SOURCE_HEADERS=(
+    "jconfig.h"
+    "jconfigint.h"
+    "jversion.h"
+    "neon-compat.h"
+)
+
+for HEADER in "${UPDATE_SOURCE_HEADERS[@]}"; do
+    cp -f "$INCLUDE_DIR/$HEADER" "$LIBRARY_DIR/../source/include/"
+done
+
+sed -i '' 's/#define SIZEOF_SIZE_T  8/\/\/ #define SIZEOF_SIZE_T  8/' $LIBRARY_DIR/../source/include/jconfigint.h
+sed -i '' 's/#define BUILD  "20230628"/#define BUILD  __TIMESTAMP__/' $LIBRARY_DIR/../source/include/jconfigint.h
