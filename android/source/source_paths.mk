@@ -1,0 +1,16 @@
+#
+# Created by GuHaijun on 2023/6/25.
+#
+
+JPEG_TURBO_SRC_PATH := ../../libjpeg-turbo
+JPEG_TURBO_SIMD_SRC_PATH := $(JPEG_TURBO_SRC_PATH)/simd
+
+JPEG_TURBO_C_INCLUDES += \
+	include \
+	$(JPEG_TURBO_SRC_PATH) \
+    $(JPEG_TURBO_SIMD_SRC_PATH) \
+    $(JPEG_TURBO_SIMD_SRC_PATH)/nasm \
+
+JPEG_TURBO_EXPORT_C_INCLUDES := \
+	include \
+	$(JPEG_TURBO_SRC_PATH) \

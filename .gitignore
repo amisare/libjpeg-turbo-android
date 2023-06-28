@@ -18,13 +18,11 @@
 
 # Libraries
 *.lib
-*.a
 *.la
 *.lo
 
 # Shared objects (inc. Windows DLLs)
 *.dll
-*.so
 *.so.*
 *.dylib
 
@@ -51,3 +49,6 @@ Module.symvers
 Mkfile.old
 dkms.conf
 .DS_Store
+build/
+libs/
+obj/

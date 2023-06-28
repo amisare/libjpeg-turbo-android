@@ -2,7 +2,34 @@ This repository provides a Android.mk build configuration for [libjpeg-turbo](ht
 
 ## Usage
 
-#### Clone
+### Integration
+
+Then add this repo as a submodule to your own project.
+
+```
+git submodule add https://github.com/amisare/libjpeg-turbo-android.git libjpeg-turbo-android
+git submodule update --recurse-submodules
+```
+
+#### Source code integration
+
+Add libjpeg-turbo-android/libjpeg-turbo/source/Android.mk to your project Android.mk
+
+```
+include <path to libjpeg-turbo-android/libjpeg-turbo/source>/Android.mk
+```
+
+#### Library integration (only available libjpeg-turbo 3.0.x)
+
+Add libjpeg-turbo-android/libjpeg-turbo/library/Android.mk to your project Android.mk
+
+```
+include <path to libjpeg-turbo-android/libjpeg-turbo/library>/Android.mk
+```
+
+## Updating
+
+### Clone
 
 This repo uses [Git Submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) to bring in dependent components.
 
@@ -20,28 +47,35 @@ If you have downloaded the repo without using the `--recurse-submodules` argumen
 git submodule update --init --recursive
 ```
 
-#### Integration
+### Modify
 
-Then add this repo as a submodule to your own project.
-
-```
-git submodule add https://github.com/amisare/libjpeg-turbo-android.git libjpeg-turbo-android
-```
-
-Add libjpeg-turbo-android Android.mk to your project Android.mk
-
-```
-include <path to libjpeg-turbo-android>/Android.mk
-```
-
-## Updating libjpeg-turbo
-
-The [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo.git) is a submodule of [libjpeg-turbo-android](https://github.com/amisare/libjpeg-turbo-android.git). In [libjpeg-turbo-android](https://github.com/amisare/libjpeg-turbo-android.git), there are version branches corresponding to [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo.git).
+The [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo.git) is a submodule of [libjpeg-turbo-android](https://github.com/amisare/libjpeg-turbo-android.git). In [libjpeg-turbo-android](https://github.com/amisare/libjpeg-turbo-android.git) libjpeg-turbo/sources, there are version branches corresponding to [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo.git).
 
 For example, to upgrade the [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo.git) version to 1.5.x, first switch the [libjpeg-turbo-android](https://github.com/amisare/libjpeg-turbo-android.git) repository to the corresponding branch, which is 1.5.x.
 
-Than testing build
+### Build and check
+#### Source code
+
+Testing build
 
 ```
+cd libjpeg-turbo-android/source
 ndk-build NDK_PROJECT_PATH=$(pwd) APP_BUILD_SCRIPT=$(pwd)/Android.mk
+```
+
+#### Library
+
+**It successfully run only on macOS, without attempting on other systems.**
+
+Edit **build.sh** according your configuration.
+```
+NDK_PATH=~/Library/Android/sdk/ndk/21.0.6113669
+TOOLCHAIN_VERSION="4.9"
+ANDROID_VERSION=21
+```
+
+Run build script
+```
+cd libjpeg-turbo-android/library
+./build.sh
 ```
