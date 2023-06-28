@@ -33,13 +33,8 @@ include <path to android/binary>/Android.mk
 
 This repo uses [Git Submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) to bring in dependent components.
 
-To clone using HTTPS:
 ```
 git clone https://github.com/amisare/libjpeg-turbo-android.git --recurse-submodules
-```
-Using SSH:
-```
-git clone git@github.com:amisare/libjpeg-turbo-android.git --recurse-submodules
 ```
 
 If you have downloaded the repo without using the `--recurse-submodules` argument, you need to run:
