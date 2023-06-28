@@ -13,18 +13,18 @@ git submodule update --recurse-submodules
 
 #### Source code integration
 
-Add libjpeg-turbo-android/libjpeg-turbo/source/Android.mk to your project Android.mk
+Add android/source/Android.mk to your project Android.mk
 
 ```
-include <path to libjpeg-turbo-android/libjpeg-turbo/source>/Android.mk
+include <path to android/source>/Android.mk
 ```
 
-#### Library integration (only available libjpeg-turbo 3.0.x)
+#### Binary integration (only available libjpeg-turbo 3.0.x)
 
-Add libjpeg-turbo-android/libjpeg-turbo/library/Android.mk to your project Android.mk
+Add android/binary/Android.mk to your project Android.mk
 
 ```
-include <path to libjpeg-turbo-android/libjpeg-turbo/library>/Android.mk
+include <path to android/binary>/Android.mk
 ```
 
 ## Updating
@@ -49,7 +49,7 @@ git submodule update --init --recursive
 
 ### Modify
 
-The [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo.git) is a submodule of [libjpeg-turbo-android](https://github.com/amisare/libjpeg-turbo-android.git). In [libjpeg-turbo-android](https://github.com/amisare/libjpeg-turbo-android.git) libjpeg-turbo/sources, there are version branches corresponding to [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo.git).
+The [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo.git) is a submodule of [libjpeg-turbo-android](https://github.com/amisare/libjpeg-turbo-android.git). In [libjpeg-turbo-android](https://github.com/amisare/libjpeg-turbo-android.git), there are version branches corresponding to [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo.git).
 
 For example, to upgrade the [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo.git) version to 1.5.x, first switch the [libjpeg-turbo-android](https://github.com/amisare/libjpeg-turbo-android.git) repository to the corresponding branch, which is 1.5.x.
 
@@ -59,13 +59,17 @@ For example, to upgrade the [libjpeg-turbo](https://github.com/libjpeg-turbo/lib
 Testing build
 
 ```
-cd libjpeg-turbo-android/source
+cd android/source
 ndk-build NDK_PROJECT_PATH=$(pwd) APP_BUILD_SCRIPT=$(pwd)/Android.mk
 ```
 
-#### Library
+#### Binary
 
 **It successfully run only on macOS, without attempting on other systems.**
+
+```
+cd android/binary
+```
 
 Edit **build.sh** according your configuration.
 ```
@@ -76,6 +80,5 @@ ANDROID_VERSION=21
 
 Run build script
 ```
-cd libjpeg-turbo-android/library
 ./build.sh
 ```
