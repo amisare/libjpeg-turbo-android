@@ -23,7 +23,7 @@ LOCAL_CFLAGS += \
 	-DBITS_IN_JSAMPLE=16 \
 
 # lib static
-LOCAL_MODULE := jpeg16
+LOCAL_MODULE := jpeg16_static
 ifeq ($(filter $(modules-get-list), $(LOCAL_MODULE)),)
     include $(BUILD_STATIC_LIBRARY)
 endif

@@ -21,7 +21,7 @@ LOCAL_CFLAGS += \
 	-DPPM_SUPPORTED \
 
 # lib static
-LOCAL_MODULE := turbojpeg12
+LOCAL_MODULE := turbojpeg12_static
 ifeq ($(filter $(modules-get-list), $(LOCAL_MODULE)),)
     include $(BUILD_STATIC_LIBRARY)
 endif

@@ -21,6 +21,30 @@ function copy_header_files() {
     done
 }
 
+function copy_lib_files() {
+    local src_dir="$1"  # 源目录
+    local dst_dir="$2"  # 目标目录
+    
+    # 创建目标目录
+    mkdir -p "$dst_dir"
+    
+    # 遍历源目录的二级子目录
+    for dir in "$src_dir"/*; do
+        # 检查是否是目录
+        if [ -d "$dir" ]; then
+            # 获取目录名
+            dirname=$(basename "$dir")
+            
+            # 在目标目录中创建对应的目录
+            mkdir -p "$dst_dir/$dirname"
+            
+            # 复制 .a 和 .so 文件到目标目录
+            cp "$dir"/*.a "$dst_dir/$dirname"
+            cp "$dir"/*.so "$dst_dir/$dirname"
+        fi
+    done
+}
+
 LIBJPEG_TURBO_DIR="$DIR/../../libjpeg-turbo"
 LIBRARY_DIR="$DIR"
 LIB_DIR="$LIBRARY_DIR/lib"
@@ -29,90 +53,50 @@ INCLUDE_DIR="$LIBRARY_DIR/include"
 rm -rf "$LIB_DIR"
 rm -rf "$INCLUDE_DIR"
 
-APP_ABIS=(
-    "x86"
-    "x86_64"
-    "armeabi-v7a"
-    "arm64-v8a"
-)
+# cmake
+rm -rf build
+mkdir build
+cd build
 
-for ABI in "${APP_ABIS[@]}"; do
-    
-    # 零时构建目录
-    rm -rf build
-    mkdir build
-    cd build
-    
-    if [ "$ABI" = "armeabi-v7a" ]; then
-        
-        cmake -G"Unix Makefiles" \
-        -DANDROID_ABI=armeabi-v7a \
-        -DANDROID_ARM_MODE=arm \
-        -DANDROID_PLATFORM=android-${ANDROID_VERSION} \
-        -DANDROID_TOOLCHAIN=${TOOLCHAIN} \
-        -DCMAKE_ASM_FLAGS="--target=arm-linux-androideabi${ANDROID_VERSION}" \
-        -DCMAKE_TOOLCHAIN_FILE=${NDK_PATH}/build/cmake/android.toolchain.cmake \
-        $LIBJPEG_TURBO_DIR \
-        
-        elif [ "$ABI" = "arm64-v8a" ]; then
-        
-        cmake -G"Unix Makefiles" \
-        -DANDROID_ABI=arm64-v8a \
-        -DANDROID_ARM_MODE=arm \
-        -DANDROID_PLATFORM=android-${ANDROID_VERSION} \
-        -DANDROID_TOOLCHAIN=${TOOLCHAIN} \
-        -DCMAKE_ASM_FLAGS="--target=aarch64-linux-android${ANDROID_VERSION}" \
-        -DCMAKE_TOOLCHAIN_FILE=${NDK_PATH}/build/cmake/android.toolchain.cmake \
-        $LIBJPEG_TURBO_DIR \
-        
-        elif [ "$ABI" = "x86" ]; then
-        
-        cmake -G"Unix Makefiles" \
-        -DANDROID_ABI=x86 \
-        -DANDROID_PLATFORM=android-${ANDROID_VERSION} \
-        -DANDROID_TOOLCHAIN=${TOOLCHAIN} \
-        -DCMAKE_TOOLCHAIN_FILE=${NDK_PATH}/build/cmake/android.toolchain.cmake \
-        $LIBJPEG_TURBO_DIR \
-        
-        elif [ "$ABI" = "x86_64" ]; then
-        
-        cmake -G"Unix Makefiles" \
-        -DANDROID_ABI=x86_64 \
-        -DANDROID_PLATFORM=android-${ANDROID_VERSION} \
-        -DANDROID_TOOLCHAIN=${TOOLCHAIN} \
-        -DCMAKE_TOOLCHAIN_FILE=${NDK_PATH}/build/cmake/android.toolchain.cmake \
-        $LIBJPEG_TURBO_DIR \
-        
-    fi
-    
-    # 构建
-    make -j4
-    
-    # 创建目录
-    dst_dir="$LIB_DIR/$ABI"
-    rm -rf "$dst_dir"
-    mkdir -p "$dst_dir"
-    
-    # 文件数组
-    src_files=(
-        "libjpeg.a"
-        "libjpeg.so"
-        "libturbojpeg.a"
-        "libturbojpeg.so"
-    )
-    
-    # 遍历文件数组
-    for file in "${src_files[@]}" ; do
-        # 拷贝文件到目标目录
-        cp "$file" "$dst_dir"
-    done
-    
-    # 退出 build 目录
-    cd ..
-done
+cmake -G"Unix Makefiles" \
+    -DANDROID_ABI=arm64-v8a \
+    -DANDROID_ARM_MODE=arm \
+    -DANDROID_PLATFORM=android-${ANDROID_VERSION} \
+    -DANDROID_TOOLCHAIN=${TOOLCHAIN} \
+    -DCMAKE_ASM_FLAGS="--target=aarch64-linux-android${ANDROID_VERSION}" \
+    -DCMAKE_TOOLCHAIN_FILE=${NDK_PATH}/build/cmake/android.toolchain.cmake \
+    $LIBJPEG_TURBO_DIR \
+
+cd ..
 
 copy_header_files "build" "$INCLUDE_DIR"
 copy_header_files "build/simd/arm" "$INCLUDE_DIR"
 copy_header_files "$LIBJPEG_TURBO_DIR" "$INCLUDE_DIR"
 
+sed -i '' 's/#define SIZEOF_SIZE_T  8/\/\/ #define SIZEOF_SIZE_T  8/' $LIBRARY_DIR/include/jconfigint.h
+sed -i '' 's/#define BUILD  \".*\"/#define BUILD  __TIMESTAMP__/' $LIBRARY_DIR/include/jconfigint.h
+
 rm -rf build
+
+# build
+BUILD_LIBS_DIR="$DIR/libs"
+BUILD_OBJ_DIR="$DIR/obj"
+
+UPDATE_SOURCE_HEADERS=(
+    "jconfig.h"
+    "jconfigint.h"
+    "jversion.h"
+    "neon-compat.h"
+)
+
+for HEADER in "${UPDATE_SOURCE_HEADERS[@]}"; do
+    cp -f "$INCLUDE_DIR/$HEADER" "$LIBRARY_DIR/../source/include/"
+done
+
+ndk-build NDK_PROJECT_PATH=$DIR APP_BUILD_SCRIPT=$DIR/../source/Android.mk clean
+ndk-build NDK_PROJECT_PATH=$DIR APP_BUILD_SCRIPT=$DIR/../source/Android.mk
+
+copy_lib_files "$BUILD_OBJ_DIR/local" "$LIB_DIR"
+
+rm -rf "$BUILD_LIBS_DIR"
+rm -rf "$BUILD_OBJ_DIR"

@@ -32,10 +32,10 @@ LOCAL_CFLAGS += \
 	-DPPM_SUPPORTED=1 \
 
 # depanencies
-LOCAL_STATIC_LIBRARIES += jpeg12
-LOCAL_STATIC_LIBRARIES += jpeg16
-LOCAL_STATIC_LIBRARIES += turbojpeg12
-LOCAL_STATIC_LIBRARIES += turbojpeg16
+LOCAL_STATIC_LIBRARIES += jpeg12_static
+LOCAL_STATIC_LIBRARIES += jpeg16_static
+LOCAL_STATIC_LIBRARIES += turbojpeg12_static
+LOCAL_STATIC_LIBRARIES += turbojpeg16_static
 
 # lib static
 LOCAL_MODULE := turbojpeg_static

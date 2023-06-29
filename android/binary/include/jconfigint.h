@@ -1,5 +1,5 @@
 /* libjpeg-turbo build number */
-#define BUILD  "20230628"
+#define BUILD  __TIMESTAMP__
 
 /* Compiler's inline keyword */
 #undef inline
@@ -17,7 +17,7 @@
 #define VERSION  "2.1.91"
 
 /* The size of `size_t', as computed by sizeof. */
-#define SIZEOF_SIZE_T  8
+// #define SIZEOF_SIZE_T  8
 
 /* Define if your compiler has __builtin_ctzl() and sizeof(unsigned long) == sizeof(size_t). */
 #define HAVE_BUILTIN_CTZL
