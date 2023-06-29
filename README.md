@@ -33,13 +33,8 @@ include <path to android/binary>/Android.mk
 
 This repo uses [Git Submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) to bring in dependent components.
 
-To clone using HTTPS:
 ```
 git clone https://github.com/amisare/libjpeg-turbo-android.git --recurse-submodules
-```
-Using SSH:
-```
-git clone git@github.com:amisare/libjpeg-turbo-android.git --recurse-submodules
 ```
 
 If you have downloaded the repo without using the `--recurse-submodules` argument, you need to run:
@@ -51,7 +46,7 @@ git submodule update --init --recursive
 
 The [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo.git) is a submodule of [libjpeg-turbo-android](https://github.com/amisare/libjpeg-turbo-android.git). In [libjpeg-turbo-android](https://github.com/amisare/libjpeg-turbo-android.git), there are version branches corresponding to [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo.git).
 
-For example, to upgrade the [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo.git) version to 1.5.x, first switch the [libjpeg-turbo-android](https://github.com/amisare/libjpeg-turbo-android.git) repository to the corresponding branch, which is 1.5.x.
+For example, to upgrade the [libjpeg-turbo](https://github.com/libjpeg-turbo/libjpeg-turbo.git) version to 2.1.5, first switch the [libjpeg-turbo-android](https://github.com/amisare/libjpeg-turbo-android.git) repository to the corresponding tag, which is 2.1.5.x.
 
 ### Build and check
 #### Source code
