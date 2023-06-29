@@ -44,15 +44,17 @@ ifeq ($(filter $(modules-get-list), $(LOCAL_MODULE)),)
 endif
 
 # lib share
-include $(CLEAR_VARS)
-LOCAL_EXPORT_LDLIBS += -llog
+ifeq ($(LIBJPEG_TURBO_LIB_TYPE), SHARED)
+    include $(CLEAR_VARS)
+    LOCAL_EXPORT_LDLIBS += -llog
 
-LOCAL_WHOLE_STATIC_LIBRARIES = turbojpeg_static
-LOCAL_DISABLE_FATAL_LINKER_WARNINGS := true
+    LOCAL_WHOLE_STATIC_LIBRARIES = turbojpeg_static
+    LOCAL_DISABLE_FATAL_LINKER_WARNINGS := true
 
-LOCAL_MODULE := turbojpeg
-ifeq ($(filter $(modules-get-list), $(LOCAL_MODULE)),)
-    include $(BUILD_SHARED_LIBRARY)
+    LOCAL_MODULE := turbojpeg
+    ifeq ($(filter $(modules-get-list), $(LOCAL_MODULE)),)
+        include $(BUILD_SHARED_LIBRARY)
+    endif
 endif
 
 include $(LOCAL_PATH)/jpeg12.mk

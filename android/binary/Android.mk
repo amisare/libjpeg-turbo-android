@@ -2,71 +2,42 @@
 # Created by GuHaijun on 2023/6/26.
 #
 
+USER_LOCAL_PATH:=$(LOCAL_PATH)
+
 LOCAL_PATH := $(call my-dir)
+
+ifeq ($(LIBJPEG_TURBO_LIB_TYPE),)
+    LIBJPEG_TURBO_LIB_TYPE := SHARED
+endif
 
 LIBJPEG_TURBO_C_INCLUDES_DIR := $(LOCAL_PATH)/include
 LIBJPEG_TURBO_LIBS_DIR := lib/$(TARGET_ARCH_ABI)
 
-include $(CLEAR_VARS)
-LOCAL_MODULE := jpeg_static
-LOCAL_EXPORT_C_INCLUDES := $(LIBJPEG_TURBO_C_INCLUDES_DIR)
-LOCAL_SRC_FILES := $(LIBJPEG_TURBO_LIBS_DIR)/libjpeg_static.a
-ifeq ($(filter $(modules-get-list), $(LOCAL_MODULE)),)
-    include $(PREBUILT_STATIC_LIBRARY)
+LIBJPEG_TURBO_STATIC_LIBS := jpeg_static \
+    turbojpeg_static \
+    jpeg12_static \
+    jpeg16_static \
+    turbojpeg12_static \
+    turbojpeg16_static \
+
+LIBJPEG_TURBO_SHARED_LIBS := jpeg \
+    turbojpeg \
+
+LIBJPEG_TURBO_LIB_PREFIX := lib
+LIBJPEG_TURBO_LIB_STATIC_SUFFIX := a
+LIBJPEG_TURBO_LIB_SHARED_SUFFIX := so
+
+define LIBJPEG_TURBO_ADD_LIB_MODULE
+    include $(CLEAR_VARS)
+    LOCAL_MODULE := $1
+    LOCAL_SRC_FILES := $(LIBJPEG_TURBO_LIBS_DIR)/$(LIBJPEG_TURBO_LIB_PREFIX)$1.$(LIBJPEG_TURBO_LIB_$(LIBJPEG_TURBO_LIB_TYPE)_SUFFIX)
+    LOCAL_EXPORT_C_INCLUDES := $(LIBJPEG_TURBO_C_INCLUDES_DIR)
+    include $(PREBUILT_$(LIBJPEG_TURBO_LIB_TYPE)_LIBRARY)
+endef
+
+ifeq ($(LIBJPEG_TURBO_$(TARGET_ARCH_ABI)_ALREADY_INCLUDED),)
+    $(foreach module,$(LIBJPEG_TURBO_$(LIBJPEG_TURBO_LIB_TYPE)_LIBS),$(eval $(call LIBJPEG_TURBO_ADD_LIB_MODULE,$(module))))
+    LIBJPEG_TURBO_$(TARGET_ARCH_ABI)_ALREADY_INCLUDED:=on
 endif
 
-include $(CLEAR_VARS)
-LOCAL_MODULE := jpeg
-LOCAL_EXPORT_C_INCLUDES := $(LIBJPEG_TURBO_C_INCLUDES_DIR)
-LOCAL_SRC_FILES := $(LIBJPEG_TURBO_LIBS_DIR)/libjpeg.so
-ifeq ($(filter $(modules-get-list), $(LOCAL_MODULE)),)
-    include $(PREBUILT_SHARED_LIBRARY)
-endif
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := turbojpeg_static
-LOCAL_EXPORT_C_INCLUDES := $(LIBJPEG_TURBO_C_INCLUDES_DIR)
-LOCAL_SRC_FILES := $(LIBJPEG_TURBO_LIBS_DIR)/libturbojpeg_static.a
-ifeq ($(filter $(modules-get-list), $(LOCAL_MODULE)),)
-    include $(PREBUILT_STATIC_LIBRARY)
-endif
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := turbojpeg
-LOCAL_EXPORT_C_INCLUDES := $(LIBJPEG_TURBO_C_INCLUDES_DIR)
-LOCAL_SRC_FILES := $(LIBJPEG_TURBO_LIBS_DIR)/libturbojpeg.so
-ifeq ($(filter $(modules-get-list), $(LOCAL_MODULE)),)
-    include $(PREBUILT_SHARED_LIBRARY)
-endif
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := jpeg12_static
-LOCAL_EXPORT_C_INCLUDES := $(LIBJPEG_TURBO_C_INCLUDES_DIR)
-LOCAL_SRC_FILES := $(LIBJPEG_TURBO_LIBS_DIR)/libjpeg12_static.a
-ifeq ($(filter $(modules-get-list), $(LOCAL_MODULE)),)
-    include $(PREBUILT_STATIC_LIBRARY)
-endif
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := jpeg16_static
-LOCAL_EXPORT_C_INCLUDES := $(LIBJPEG_TURBO_C_INCLUDES_DIR)
-LOCAL_SRC_FILES := $(LIBJPEG_TURBO_LIBS_DIR)/libjpeg16_static.a
-ifeq ($(filter $(modules-get-list), $(LOCAL_MODULE)),)
-    include $(PREBUILT_STATIC_LIBRARY)
-endif
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := turbojpeg12_static
-LOCAL_EXPORT_C_INCLUDES := $(LIBJPEG_TURBO_C_INCLUDES_DIR)
-LOCAL_SRC_FILES := $(LIBJPEG_TURBO_LIBS_DIR)/libturbojpeg12_static.a
-ifeq ($(filter $(modules-get-list), $(LOCAL_MODULE)),)
-    include $(PREBUILT_STATIC_LIBRARY)
-endif
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := turbojpeg16_static
-LOCAL_EXPORT_C_INCLUDES := $(LIBJPEG_TURBO_C_INCLUDES_DIR)
-LOCAL_SRC_FILES := $(LIBJPEG_TURBO_LIBS_DIR)/libturbojpeg16_static.a
-ifeq ($(filter $(modules-get-list), $(LOCAL_MODULE)),)
-    include $(PREBUILT_STATIC_LIBRARY)
-endif
+LOCAL_PATH:=$(USER_LOCAL_PATH)
