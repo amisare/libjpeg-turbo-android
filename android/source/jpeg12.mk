@@ -29,3 +29,4 @@ LOCAL_MODULE := jpeg12_static
 ifeq ($(filter $(modules-get-list), $(LOCAL_MODULE)),)
     include $(BUILD_STATIC_LIBRARY)
 endif
+LIBJPEG_TURBO_LOCAL_$(LIBJPEG_TURBO_LIB_TYPE)_LIBRARIES += $(LOCAL_MODULE)

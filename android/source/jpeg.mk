@@ -30,6 +30,7 @@ LOCAL_MODULE := jpeg_static
 ifeq ($(filter $(modules-get-list), $(LOCAL_MODULE)),)
     include $(BUILD_STATIC_LIBRARY)
 endif
+LIBJPEG_TURBO_LOCAL_$(LIBJPEG_TURBO_LIB_TYPE)_LIBRARIES += $(LOCAL_MODULE)
 
 # lib share
 ifeq ($(LIBJPEG_TURBO_LIB_TYPE), SHARED)
@@ -43,6 +44,7 @@ ifeq ($(LIBJPEG_TURBO_LIB_TYPE), SHARED)
     ifeq ($(filter $(modules-get-list), $(LOCAL_MODULE)),)
         include $(BUILD_SHARED_LIBRARY)
     endif
+    LIBJPEG_TURBO_LOCAL_$(LIBJPEG_TURBO_LIB_TYPE)_LIBRARIES += $(LOCAL_MODULE)
 endif
 
 include $(LOCAL_PATH)/jpeg12.mk
