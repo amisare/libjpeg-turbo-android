@@ -100,9 +100,5 @@ ndk-build NDK_PROJECT_PATH=$(pwd) APP_BUILD_SCRIPT=$(pwd)/Android.mk
 
 ```
 cd android/binary
-```
-
-Run build script
-```
 ./build.sh
 ```
