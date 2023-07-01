@@ -19,7 +19,7 @@ Add android/source/Android.mk to your project Android.mk
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
-# begin libusb
+# begin libjpeg-turbo
 LIBJPEG_TURBO_PATH := $(LOCAL_PATH)/<path to>/libjpeg-turbo-android/android/source/Android.mk
 # LIBJPEG_TURBO_LIB_TYPE := STATIC
 # or
@@ -32,7 +32,7 @@ LOCAL_C_INCLUDES += $(LIBJPEG_TURBO_LOCAL_C_INCLUDES)
 LOCAL_EXPORT_C_INCLUDES += $(LIBJPEG_TURBO_LOCAL_EXPORT_C_INCLUDES)
 LOCAL_STATIC_LIBRARIES += $(LIBJPEG_TURBO_LOCAL_STATIC_LIBRARIES)
 LOCAL_SHARED_LIBRARIES += $(LIBJPEG_TURBO_LOCAL_SHARED_LIBRARIES)
-# end libusb
+# end libjpeg-turbo
 
 # your config
 ```
