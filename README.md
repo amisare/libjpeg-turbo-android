@@ -16,7 +16,25 @@ git submodule update --recurse-submodules
 Add android/source/Android.mk to your project Android.mk
 
 ```
-include <path to android/source>/Android.mk
+LOCAL_PATH := $(call my-dir)
+include $(CLEAR_VARS)
+
+# begin libusb
+LIBJPEG_TURBO_PATH := $(LOCAL_PATH)/<path to>/libjpeg-turbo-android/android/source/Android.mk
+# LIBJPEG_TURBO_LIB_TYPE := STATIC
+# or
+# LIBJPEG_TURBO_LIB_TYPE := SHARED
+include $(LIBJPEG_TURBO_PATH)
+
+include $(CLEAR_VARS)
+
+LOCAL_C_INCLUDES += $(LIBJPEG_TURBO_LOCAL_C_INCLUDES)
+LOCAL_EXPORT_C_INCLUDES += $(LIBJPEG_TURBO_LOCAL_EXPORT_C_INCLUDES)
+LOCAL_STATIC_LIBRARIES += $(LIBJPEG_TURBO_LOCAL_STATIC_LIBRARIES)
+LOCAL_SHARED_LIBRARIES += $(LIBJPEG_TURBO_LOCAL_SHARED_LIBRARIES)
+# end libusb
+
+# your config
 ```
 
 #### Binary integration (only available libjpeg-turbo 3.0.x)
@@ -24,7 +42,25 @@ include <path to android/source>/Android.mk
 Add android/binary/Android.mk to your project Android.mk
 
 ```
-include <path to android/binary>/Android.mk
+LOCAL_PATH := $(call my-dir)
+include $(CLEAR_VARS)
+
+# begin libusb
+LIBJPEG_TURBO_PATH := $(LOCAL_PATH)/<path to>/libjpeg-turbo-android/android/binary/Android.mk
+# LIBJPEG_TURBO_LIB_TYPE := STATIC
+# or
+# LIBJPEG_TURBO_LIB_TYPE := SHARED
+include $(LIBJPEG_TURBO_PATH)
+
+include $(CLEAR_VARS)
+
+LOCAL_C_INCLUDES += $(LIBJPEG_TURBO_LOCAL_C_INCLUDES)
+LOCAL_EXPORT_C_INCLUDES += $(LIBJPEG_TURBO_LOCAL_EXPORT_C_INCLUDES)
+LOCAL_STATIC_LIBRARIES += $(LIBJPEG_TURBO_LOCAL_STATIC_LIBRARIES)
+LOCAL_SHARED_LIBRARIES += $(LIBJPEG_TURBO_LOCAL_SHARED_LIBRARIES)
+# end libusb
+
+# your config
 ```
 
 ## Updating
@@ -64,13 +100,6 @@ ndk-build NDK_PROJECT_PATH=$(pwd) APP_BUILD_SCRIPT=$(pwd)/Android.mk
 
 ```
 cd android/binary
-```
-
-Edit **build.sh** according your configuration.
-```
-NDK_PATH=~/Library/Android/sdk/ndk/21.0.6113669
-TOOLCHAIN_VERSION="4.9"
-ANDROID_VERSION=21
 ```
 
 Run build script
